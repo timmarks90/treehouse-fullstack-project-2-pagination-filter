@@ -8,6 +8,7 @@ const pageHeader = document.querySelector('.page-header');
 // Hide all but 10 students in list on page load. Each page will only show 10 students.
 const showPage = (number, list) => {
   for (let i = 0; i < list.length; i++) {
+    // Set the min & max range of users to display per page
     if (i >= (number * pageLimit) - 10 && i <= (number * pageLimit) - 1 ) {
       list[i].style.display = 'block';
     } else {
@@ -26,8 +27,8 @@ const pagination = studentList => {
   paginationDiv.appendChild(ul); // add ul to pagination div 
   pageDiv.appendChild(paginationDiv); // add pagination div to end of page main div
   
-  // Add paginated list item based off total users per page 
-  for(let i = 1; i < totalPages; i++) {
+  // Add paginated list item based off total users per page.
+  for(let i = 1; i <= totalPages; i++) {
     const li = document.createElement('li');
     const link = document.createElement('a');
     link.href = "#";
@@ -75,15 +76,19 @@ const search = list => {
       let studentEmail = studentList[i].querySelector('.student-details .email').innerHTML.toLowerCase();
       let doesContainName = studentNames.search(searchValue);
       let doesContainEmail = studentEmail.search(searchValue);
+      // if the name or email is present, add to the matchedList array
       if (doesContainName != -1 || doesContainEmail != -1) {
         matchedList.push(studentList[i]);
         studentList[i].removeAttribute('style');
+        // Remove pagination if the list returns less than 10 students
+        pagination(matchedList);
       }
     }
     // Alert popup if no search results returned
     if (matchedList <= 0) {
       alert("no students found");
     }
+
     // Add pagination and limit to max per page
     showPage(1, matchedList); 
   })
