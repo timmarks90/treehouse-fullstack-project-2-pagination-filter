@@ -16,7 +16,7 @@ const showPage = (number, list) => {
     }
   }
 }
-
+// Run showPage function to filter student list to max of 10 per page
 showPage(1, studentList);
 
 // Add pagination to bottom of the page based off number of pages to show
@@ -44,14 +44,14 @@ const pagination = studentList => {
     // Add and remove Active class onClick of paginated items
     ul.addEventListener('click', e => {
       if (e.target === link) {
-        showPage(e.target.text, studentList);
-        document.querySelectorAll('.pagination a').forEach( el => el.classList.remove('active'));
+        showPage(e.target.texConent, studentList);
+        document.querySelectorAll('.pagination a').forEach( element => element.classList.remove('active'));
         e.target.classList.add('active');
       }
     })
   }
 }
-
+// Run pagination function to make pagination items appear
 pagination(studentList);
 
 // Create search field elements in header to search through list of students
@@ -68,30 +68,30 @@ const search = list => {
 
   // Grab search input contents on click of submit and return list items that match
   searchButton.addEventListener('click', list => {
-    let matchedList = [];
+    // Set returned list as empty array
+    let returnedStudents = [];
     let searchValue = searchDivInput.value.toLocaleLowerCase();
     for (let i = 0; i < studentList.length; i++) {
       studentList[i].style.display = 'none';
       let studentNames = studentList[i].querySelector('.student-details h3').innerHTML.toLowerCase();
       let studentEmail = studentList[i].querySelector('.student-details .email').innerHTML.toLowerCase();
-      let doesContainName = studentNames.search(searchValue);
-      let doesContainEmail = studentEmail.search(searchValue);
-      // if the name or email is present, add to the matchedList array
-      if (doesContainName != -1 || doesContainEmail != -1) {
-        matchedList.push(studentList[i]);
-        studentList[i].removeAttribute('style');
+      let namePresent = studentNames.search(searchValue);
+      let emailPresent = studentEmail.search(searchValue);
+      // if the name or email is present, add to the returnedStudents array
+      if (namePresent != -1 || emailPresent != -1) {
+        returnedStudents.push(studentList[i]);
         // Remove pagination if the list returns less than 10 students
-        pagination(matchedList);
+        pagination(returnedStudents);
       }
     }
     // Alert popup if no search results returned
-    if (matchedList <= 0) {
+    if (returnedStudents <= 0) {
       alert("no students found");
     }
 
     // Add pagination and limit to max per page
-    showPage(1, matchedList); 
+    showPage(1, returnedStudents); 
   })
 }
-
+// Run search function to make search bar appear
 search(studentList);
