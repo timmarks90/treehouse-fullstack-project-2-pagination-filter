@@ -44,7 +44,7 @@ const pagination = studentList => {
     // Add and remove Active class onClick of paginated items
     ul.addEventListener('click', e => {
       if (e.target === link) {
-        showPage(e.target.texConent, studentList);
+        showPage(e.target.text, studentList);
         document.querySelectorAll('.pagination a').forEach( element => element.classList.remove('active'));
         e.target.classList.add('active');
       }
