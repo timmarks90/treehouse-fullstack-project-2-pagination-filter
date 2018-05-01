@@ -20,7 +20,7 @@ const showPage = (number, list) => {
 showPage(1, studentList);
 
 // Add pagination to bottom of the page based off number of pages to show
-const pagination = studentList => {
+const pagination = link => {
   const paginationDiv = document.createElement('div'); // create pagination div
   paginationDiv.className = 'pagination'; // add pagination class to div
   const ul = document.createElement('ul'); 
@@ -32,7 +32,7 @@ const pagination = studentList => {
     const li = document.createElement('li');
     const link = document.createElement('a');
     link.href = "#";
-    link.text = i;
+    link.innerHTML = i;
     li.appendChild(link);
     ul.appendChild(li);
 
@@ -44,7 +44,7 @@ const pagination = studentList => {
     // Add and remove Active class onClick of paginated items
     ul.addEventListener('click', e => {
       if (e.target === link) {
-        showPage(e.target.text, studentList);
+        showPage(i, studentList);
         document.querySelectorAll('.pagination a').forEach( element => element.classList.remove('active'));
         e.target.classList.add('active');
       }
@@ -81,12 +81,20 @@ const search = list => {
       if (namePresent != -1 || emailPresent != -1) {
         returnedStudents.push(studentList[i]);
         // Remove pagination if the list returns less than 10 students
-        pagination(returnedStudents);
+        studentList[i].removeAttribute('style');
+        pagination(returnedStudents.length);
       }
     }
-    // Alert popup if no search results returned
+    // Message if no search results returned
     if (returnedStudents <= 0) {
-      alert("no students found");
+      const noResults = document.createElement('div');
+      const noResultsP = document.createElement('p');
+      noResultsP.style.paddingTop = "10px";
+      noResultsP.style.color = "rgb(255, 104, 104)";
+      noResultsP.style.textAlign = "right";
+      noResultsP.innerHTML = "Your search returned no results.";
+      noResults.appendChild(noResultsP);
+      searchDiv.appendChild(noResults);
     }
 
     // Add pagination and limit to max per page
