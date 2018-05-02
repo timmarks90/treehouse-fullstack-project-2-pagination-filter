@@ -2,7 +2,6 @@ const studentList = document.querySelectorAll('.student-item');
 const pageLimit = 10;
 const pageDiv = document.querySelector('.page');
 // Calculate number of pages to show based off the total number of students in list
-const totalPages = Math.ceil(studentList.length / pageLimit);
 const pageHeader = document.querySelector('.page-header');
 
 // Hide all but 10 students in list on page load. Each page will only show 10 students.
@@ -20,7 +19,12 @@ const showPage = (number, list) => {
 showPage(1, studentList);
 
 // Add pagination to bottom of the page based off number of pages to show
-const pagination = link => {
+const pagination = list  => {
+  const totalPages = Math.ceil(list.length / pageLimit);
+  const paginationButton = document.querySelector('.pagination');
+  if (paginationButton) {
+    paginationButton.remove();
+  }
   const paginationDiv = document.createElement('div'); // create pagination div
   paginationDiv.className = 'pagination'; // add pagination class to div
   const ul = document.createElement('ul'); 
@@ -35,7 +39,7 @@ const pagination = link => {
     link.innerHTML = i;
     li.appendChild(link);
     ul.appendChild(li);
-
+    
     // If active page 1, add CSS class of Active
     if (i === 1) {
       link.classList.add('active');
@@ -78,13 +82,13 @@ const search = list => {
       let namePresent = studentNames.search(searchValue);
       let emailPresent = studentEmail.search(searchValue);
       // if the name or email is present, add to the returnedStudents array
-      if (namePresent != -1 || emailPresent != -1) {
+      if (namePresent >=0 || emailPresent >=0) {
         returnedStudents.push(studentList[i]);
         // Remove pagination if the list returns less than 10 students
-        studentList[i].removeAttribute('style');
-        pagination(returnedStudents.length);
+        studentList[i].removeAttribute('style');       
       }
     }
+    console.log(returnedStudents);
     // Message if no search results returned
     if (returnedStudents <= 0) {
       const noResults = document.createElement('div');
@@ -92,13 +96,16 @@ const search = list => {
       noResultsP.style.paddingTop = "10px";
       noResultsP.style.color = "rgb(255, 104, 104)";
       noResultsP.style.textAlign = "right";
-      noResultsP.innerHTML = "Your search returned no results.";
+      noResultsP.innerHTML = "No matches found.";
       noResults.appendChild(noResultsP);
       searchDiv.appendChild(noResults);
-    }
-
+      const links = document.querySelector('.pagination');
+    } 
     // Add pagination and limit to max per page
-    showPage(1, returnedStudents); 
+    
+    showPage(1, returnedStudents);
+    pagination(returnedStudents); 
+    console.log(returnedStudents);
   })
 }
 // Run search function to make search bar appear
