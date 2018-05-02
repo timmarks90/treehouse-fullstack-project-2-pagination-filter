@@ -48,7 +48,7 @@ const pagination = list  => {
     // Add and remove Active class onClick of paginated items
     ul.addEventListener('click', e => {
       if (e.target === link) {
-        showPage(i, studentList);
+        showPage(i, list);
         document.querySelectorAll('.pagination a').forEach( element => element.classList.remove('active'));
         e.target.classList.add('active');
       }
@@ -91,9 +91,11 @@ const search = list => {
 
     // Message if no search results returned
     const results = document.querySelector('.noResults');
+    // Clear results if present
     if(results){
       results.remove();
     }
+    // create results HTML content
     const noResults = document.createElement('div');
     noResults.classList.add('noResults');
     const noResultsP = document.createElement('p');
