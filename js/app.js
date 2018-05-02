@@ -88,24 +88,31 @@ const search = list => {
         studentList[i].removeAttribute('style');       
       }
     }
-    console.log(returnedStudents);
+
     // Message if no search results returned
+    const results = document.querySelector('.noResults');
+    if(results){
+      results.remove();
+    }
+    const noResults = document.createElement('div');
+    noResults.classList.add('noResults');
+    const noResultsP = document.createElement('p');
+    noResultsP.style.paddingTop = "10px";
+    noResultsP.style.color = "rgb(255, 104, 104)";
+    noResultsP.style.textAlign = "right";
+    noResultsP.innerHTML = "No matches found.";
+    noResults.appendChild(noResultsP);
+    searchDiv.appendChild(noResults);
+
     if (returnedStudents <= 0) {
-      const noResults = document.createElement('div');
-      const noResultsP = document.createElement('p');
-      noResultsP.style.paddingTop = "10px";
-      noResultsP.style.color = "rgb(255, 104, 104)";
-      noResultsP.style.textAlign = "right";
-      noResultsP.innerHTML = "No matches found.";
-      noResults.appendChild(noResultsP);
-      searchDiv.appendChild(noResults);
-      const links = document.querySelector('.pagination');
-    } 
+      noResults.style.display = 'block';
+    } else {
+      noResults.style.display = 'none';
+    }
     // Add pagination and limit to max per page
     
     showPage(1, returnedStudents);
     pagination(returnedStudents); 
-    console.log(returnedStudents);
   })
 }
 // Run search function to make search bar appear
